@@ -6,85 +6,99 @@ With **DynamicAgent2UI**, any MCP-compatible AI agent (such as Gemini Antigravit
 
 ---
 
-## ✨ Features & Architecture Highlights
+## ✨ Features
 
-- 🖥️ **OS-Native Styles**: Renders native-looking dialogs and forms precisely matching **macOS**, **Windows 11 (Fluent)**, and **Android (Material 3)** visual guidelines.
-- 📐 **Dynamic Window Resizing**: Utilizes a custom `ResizeObserver` container and Electron IPC to dynamically shrink or expand the frameless window to the exact content dimensions (+ drop shadow padding). This completely resolves the invisible background click-blocking issue, allowing clicks on transparent areas to pass through seamlessly to underlying OS applications.
-- 🕳️ **Opacity & Bleed Correction**: Uses solid, opaque fills (`bg-white` & `bg-[#1e1e1e]`) for dialogue wrappers. This prevents dark desktop wallpapers from bleeding through transparent utility classes, ensuring cross-platform text and controls remain highly legible and crisp.
-- 🎛️ **Draggable Regions**: Injects `-webkit-app-region: drag` styles natively onto the dialog backgrounds for floating multi-window environments. It keeps explicit interactive components (buttons, inputs, labels, textareas) isolated via `no-drag` exclusions to ensure perfect widget responsiveness while maintaining canvas flexibility.
-- 🔌 **Unified Self-Starting MCP**: The standalone vanilla Node.js MCP server automatically monitors local port `3000`. If offline, it intelligently boots up the Next.js development server and Electron shell wrapper concurrently on agent connection — requiring zero manual CLI management.
-- 🧩 **Zod Schema Deduplication Guard**: Built using robust factory abstractions (`makeDialogSchema()`) to prevent `Zod-to-JSON-Schema` compilation bugs from collapsing separate OS-specific dialog parameters into single `$defs` references, ensuring stable model tool validation.
+- 🖥️ **OS-Native Styles**: Renders native-looking dialogs and forms matching **macOS**, **Windows 11 (Fluent)**, and **Android (Material 3)**.
+- 📐 **Dynamic Window Resizing**: Utilizes `ResizeObserver` and Electron IPC to resize the frameless window to the exact dimensions of the dialog content (+ drop shadow padding), allowing clicks on transparent areas to pass through to background apps.
+- 🕳️ **Opacity Correction**: Uses solid, opaque fills (`bg-white` & `bg-[#1e1e1e]`) preventing desktop wallpapers from bleeding through and keeping text/controls highly legible.
+- 🎛️ **Draggable Regions**: Allows the user to click and drag the dialog background to position it anywhere on their screen, while keeping buttons and inputs interactive.
+- 🔌 **Unified Self-Starting MCP**: The MCP server automatically checks port `3000` and launches the Next.js backend and Electron app in the background when the agent connects. Zero manual CLI commands required!
 
 ---
 
-## 🏗️ Architecture Overview
+## 🛠️ Tech Stack
 
-```mermaid
-graph TD
-    Agent[AI Agent] <-->|MCP Protocol| MCPServer[MCP Server: mcp-server.js]
-    MCPServer <-->|POST/GET /api/sync| NextJS[Next.js API & Routing]
-    NextJS <-->|Poll /api/sync & BroadcastChannel| Electron[Electron Frameless Desktop Window]
-    ControlPanel[Web Control Panel] -->|Local Storage & Broadcast| Electron
-🛠️ Tech Stack
-Frontend Framework: Next.js (App Router, Tailwind CSS, TypeScript, Zod Verification)
+- **Frontend**: Next.js (App Router, Tailwind CSS, TypeScript, Zod)
+- **Desktop Wrapper**: Electron (Frameless, Transparent, IPC, Node Integration)
+- **Protocol**: Model Context Protocol (MCP JSON-RPC 2.0 over `stdio`)
 
-Desktop Container: Electron (Frameless, Transparent Canvas, IPC Channels, Node Integration)
+---
 
-Protocol Protocol: Model Context Protocol (MCP JSON-RPC 2.0 over standard stdio)
+## 🚀 Getting Started
 
-🚀 Getting Started
-1. Prerequisites
-Node.js (v18 or higher recommended)
+### 1. Prerequisites
+- **Node.js** (v18 or higher recommended)
+- **npm** (or pnpm/yarn)
 
-npm (or pnpm/yarn)
-
-2. Installation & Environment Configuration
-Clone the repository, enter the project root directory, and install the necessary dependencies:
-git clone [https://github.com/iorcunyilmaz/DynamicAgent2UI.git](https://github.com/iorcunyilmaz/DynamicAgent2UI.git)
+### 2. Installation & Environment Configuration
+Clone the repository, enter the directory, and install dependencies:
+```bash
+git clone https://github.com/your-username/DynamicAgent2UI.git
 cd DynamicAgent2UI
 npm install
-Create a .env file in the root directory to configure the AI agent's chat interface parameters (optional):
+```
+
+Create a `.env` file in the root directory to configure the AI agent's chat interface (optional):
+```env
 # Optional: Setup a custom LLM endpoint (OpenAI compatible) for the built-in control panel chat
-CUSTOM_LLM_BASE_URL=[https://api.your-provider.com/v1](https://api.your-provider.com/v1)
+CUSTOM_LLM_BASE_URL=https://api.your-provider.com/v1
 CUSTOM_LLM_API_KEY=your-api-key
 CUSTOM_LLM_MODEL=your-model-name
-Note: Replace the absolute workspace path specified within the args array with your actual cloned local repository path.
+```
 
-Once configured and restarted, the active LLM agent will inherit execution control over the following specialized UI lifecycle tools:
+---
 
-Tool: show_dialog
-Displays a native OS dialog overlay and blocks runtime pipeline execution until a responsive click action payload is transmitted back.
+## 🔌 Using with an MCP Client (e.g. Gemini, Claude Desktop, Cline)
 
-primaryButton (required): Text label (e.g. "OK", "Save").
+To integrate **DynamicAgent2UI** with your agent, add it to your client's MCP configuration settings file (e.g., `claude_desktop_config.json` or `cline_mcp_settings.json`):
 
-secondaryButton / cancelButton (optional): Secondary alternative action button labels.
+```json
+{
+  "mcpServers": {
+    "DynamicAgent2UI": {
+      "command": "node",
+      "args": ["C:/Workspace/OpenUI/mcp-server.js"]
+    }
+  }
+}
+```
 
-title / message (optional): Header title and body structural description markup.
+*Note: Replace the absolute path in `args` with your cloned repository path.*
 
-icon (optional): "info" | "warning" | "error" | "question" | "success".
+Once configured and restarted, the agent will have access to the following tools:
 
-platform (optional): "macos" | "windows" | "android". Defaults to auto-detecting the host operating system platform.
+### Tool: `show_dialog`
+Displays a native OS dialog and blocks until a button is clicked.
+- **`primaryButton`** (required): Text label (e.g. `"OK"`, `"Save"`).
+- **`secondaryButton`** / **`cancelButton`** (optional): Alternative button labels.
+- **`title`** / **`message`** (optional): Title and body description.
+- **`icon`** (optional): `"info" | "warning" | "error" | "question" | "success"`.
+- **`platform`** (optional): `"macos" | "windows" | "android"`. Defaults to auto-detecting the host OS.
+- **`theme`** (optional): `"light" | "dark"`. Default is `"light"`.
+- **`inputPlaceholder`** (optional): Adds a text input box.
 
-theme (optional): "light" | "dark". Default is "light".
+### Tool: `show_form`
+Displays a native multi-input form panel.
+- **`title`** (required): Form header title.
+- **`fields`** (required): Comma-separated labels and types, e.g. `"Username: text, Age: number, Role: select(Admin|User), Active: checkbox"`.
+- **`submitButton`** (required): Button label.
+- **`platform`** / **`theme`** (optional): OS style and color theme.
 
-inputPlaceholder (optional): Appends an automated inline text validation box into the dialog flow.
+---
 
-Tool: show_form
-Displays a structured native multi-input form layout panel tailored for gathering structured runtime variables.
+## 🏃 Running Manually (Optional)
 
-title (required): Structural form header title.
+If you wish to run the web interface or desktop window manually without the MCP server:
 
-fields (required): Comma-separated token declarations specifying fields and system types, e.g. "Username: text, Age: number, Role: select(Admin|User), Active: checkbox".
-
-submitButton (required): Final submit confirmation button layout label.
-
-platform / theme (optional): OS aesthetic engine parameters and color palette choices.
-
-🏃 Running Manually (Optional)
-If you wish to test, inspect, or run the underlying web client interface and localized desktop wrappers independently without attaching an active MCP server:
-npm run dev
-Run the Electron frameless desktop application layer:
-npm run desktop
-npm run build
-
-Run the local Next.js development environment:
+- Run the Next.js development server:
+  ```bash
+  npm run dev
+  ```
+- Run the Electron desktop window:
+  ```bash
+  npm run desktop
+  ```
+- Build for production:
+  ```bash
+  npm run build
+  ```
