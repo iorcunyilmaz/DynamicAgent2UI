@@ -5,15 +5,8 @@ An **OS-Native Floating Dialog & Form UI Canvas** that exposes interactive deskt
 With **DynamicAgent2UI**, any MCP-compatible AI agent (such as Gemini Antigravity, Claude Desktop, or VS Code Cline) can render high-fidelity, native-looking dialogs and settings forms directly on the user's desktop screen, block execution, and retrieve the user's interaction (button clicks, form inputs) as the tool response.
 
 ---
-## 🏗️ Architecture Overview
 
-```mermaid
-graph TD
-    Agent[AI Agent] <-->|MCP Protocol| MCPServer[MCP Server: mcp-server.js]
-    MCPServer <-->|POST/GET /api/sync| NextJS[Next.js API & Routing]
-    NextJS <-->|Poll /api/sync & BroadcastChannel| Electron[Electron Frameless Desktop Window]
-    ControlPanel[Web Control Panel] -->|Local Storage & Broadcast| Electron
-`
+
 ## ✨ Features
 
 - 🖥️ **OS-Native Styles**: Renders native-looking dialogs and forms matching **macOS**, **Windows 11 (Fluent)**, and **Android (Material 3)**.
