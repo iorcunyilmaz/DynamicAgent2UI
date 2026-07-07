@@ -6,7 +6,6 @@ With **DynamicAgent2UI**, any MCP-compatible AI agent (such as Gemini Antigravit
 
 ---
 
-
 ## ✨ Features
 
 - 🖥️ **OS-Native Styles**: Renders native-looking dialogs and forms matching **macOS**, **Windows 11 (Fluent)**, and **Android (Material 3)**.
