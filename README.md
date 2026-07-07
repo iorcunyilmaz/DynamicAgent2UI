@@ -13,7 +13,7 @@ graph TD
     MCPServer <-->|POST/GET /api/sync| NextJS[Next.js API & Routing]
     NextJS <-->|Poll /api/sync & BroadcastChannel| Electron[Electron Frameless Desktop Window]
     ControlPanel[Web Control Panel] -->|Local Storage & Broadcast| Electron
-
+`
 ## ✨ Features
 
 - 🖥️ **OS-Native Styles**: Renders native-looking dialogs and forms matching **macOS**, **Windows 11 (Fluent)**, and **Android (Material 3)**.
