@@ -1,0 +1,24 @@
+{
+  "components": {
+    "MacDialog": {
+      "signature": "MacDialog(title?: string, message?: string, icon?: \"info\" | \"warning\" | \"error\" | \"question\" | \"success\", primaryButton: string, secondaryButton?: string, cancelButton?: string, theme?: \"light\" | \"dark\", inputPlaceholder?: string)",
+      "description": "A macOS styled native alert dialog. Follows Apple Human Interface Guidelines. Rounded card with traffic light symbols, big central icon, and stacked action buttons."
+    },
+    "WindowsDialog": {
+      "signature": "WindowsDialog(title?: string, message?: string, icon?: \"info\" | \"warning\" | \"error\" | \"question\" | \"success\", primaryButton: string, secondaryButton?: string, cancelButton?: string, theme?: \"light\" | \"dark\", inputPlaceholder?: string)",
+      "description": "A Windows 11 styled native dialog. Follows Fluent Design System. Rectangular card with title bar, close button, and horizontal action buttons."
+    },
+    "AndroidDialog": {
+      "signature": "AndroidDialog(title?: string, message?: string, icon?: \"info\" | \"warning\" | \"error\" | \"question\" | \"success\", primaryButton: string, secondaryButton?: string, cancelButton?: string, theme?: \"light\" | \"dark\", inputPlaceholder?: string)",
+      "description": "An Android Material 3 styled native dialog. Very rounded corners (28px), Roboto typography, optional top-centered icon, and flat text action buttons at the bottom-right."
+    },
+    "NativeDialog": {
+      "signature": "NativeDialog(platform: \"macos\" | \"windows\" | \"android\", title?: string, message?: string, icon?: \"info\" | \"warning\" | \"error\" | \"question\" | \"success\", primaryButton: string, secondaryButton?: string, cancelButton?: string, theme?: \"light\" | \"dark\", inputPlaceholder?: string)",
+      "description": "A multi-platform native-like dialog which renders macOS, Windows, or Android style dialog depending on the 'platform' property."
+    },
+    "NativeForm": {
+      "signature": "NativeForm(platform: \"macos\" | \"windows\" | \"android\", title: string, fields: string, submitButton: string, cancelButton?: string, theme?: \"light\" | \"dark\")",
+      "description": "A multi-platform native-looking form panel that allows entering multi-field data using various input types."
+    }
+  }
+}

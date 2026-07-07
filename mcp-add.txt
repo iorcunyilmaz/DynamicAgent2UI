@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "openui-native-dialogs": {
+      "command": "node",
+      "args": ["C:/Workspace/OpenUI/mcp-server.js"],
+      "env": {}
+    }
+  }
+}
